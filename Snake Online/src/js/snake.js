@@ -1,6 +1,5 @@
 window.onload = function () {
 	var chanceBox = document.querySelector(".level-chance");
-	var myCanvas = document.getElementById("mycanvas");
 
 	// 给模式选择绑定点击事件
 	delegate(chanceBox, "a", "click", function () {
@@ -10,13 +9,13 @@ window.onload = function () {
 
 		switch(self.className) {
 			case "normal-mode": // 普通模式
-				normalInit(myCanvas);
+				normalInit();
 				break;
 			case "level-mode": // 过关模式
-				levelInit(myCanvas);
+				levelInit();
 				break;
 			case "dodge-mode": // 躲避模式
-				dodgeInit(myCanvas);
+				dodgeInit();
 				break;
 		}
 	});
@@ -63,10 +62,11 @@ function unEvent(elem, eventType, listener) {
 
 /**
  * 普通模式的初始化
- * @param  DOMelement canvas 游戏画布元素
  */
-function normalInit(canvas) {
+function normalInit() {
 	var snake = new Snake(10, "#000", 500);
+	var canvas = document.getElementById("mycanvas");
+
 	snake.canvasWidth = 490;
 	snake.canvasHeight = 370;
 	changeCanvas(canvas, snake.canvasWidth, snake.canvasHeight);
@@ -77,18 +77,16 @@ function normalInit(canvas) {
 
 /**
  * 过关模式的初始化
- * @param  DOMelement canvas 游戏画布元素
  */
-function levelInit(canvas) {
-
+function levelInit() {
+	var canvas = document.getElementById("mycanvas");
 }
 
 /**
  * 躲避模式的初始化
- * @param  DOMelement canvas 游戏画布元素
  */
-function dodgeInit(canvas) {
-
+function dodgeInit() {
+	var canvas = document.getElementById("mycanvas");
 }
 
 /**
