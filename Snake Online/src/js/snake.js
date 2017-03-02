@@ -71,8 +71,8 @@ function normalInit(canvas) {
 	snake.canvasHeight = 370;
 	changeCanvas(canvas, snake.canvasWidth, snake.canvasHeight);
 	snake.drawBackground(snake.canvasWidth, snake.canvasHeight);
-	snake.drawSideBar(canvas);
-	//snake.draw(canvas);
+	snake.drawSideBar();
+	//snake.draw();
 }
 
 /**
@@ -124,12 +124,57 @@ function Snake(bodyLong, color, speed) {
 }
 
 /**
+ * 动画启动函数
+ */
+Snake.prototype.draw = function () {
+
+};
+
+/**
  * 初始化蛇身每一截所在位置组成的数组
  * @param  Number bodyLong  蛇身初始长度
  * @return Array  bodyArr  位置数组
  */
 Snake.prototype.initPositionArr = function (bodyLong) {
 	
+};
+
+/**
+ * 绘制食物及组成蛇身的小方块
+ * @param  Number x 绘制小方块的x坐标
+ * @param  Number y 绘制小方块的y坐标
+ */
+Snake.prototype.drawSmallBox = function (x, y) {
+	var canvas = document.getElementById("mycanvas");
+	var ctx = canvas.getContext("2d");
+
+	ctx.strokeStyle = "#000";
+	roundedRect(ctx, x, y, 10, 10, 2, false);
+
+	ctx.fillStyle = "#000";
+	roundedRect(ctx, x+1, y+1, 8, 8, 2, true);
+};
+
+/**
+ * 产生随机位置的食物
+ */
+Snake.prototype.drawFood = function () {
+
+};
+
+/**
+ * 绘制蛇
+ */
+Snake.prototype.drawSnake = function () {
+
+};
+
+/**
+ * 碰撞检测
+ * @return Boolean 是否发生碰撞
+ */
+Snake.prototype.collisionDetection = function () {
+
 };
 
 /**
@@ -181,31 +226,31 @@ Snake.prototype.drawBackground = function (width, height) {
 };
 
 /**
- * 绘制侧边栏，包括生命值及分数
- * @param  DOMelement canvas 绘制贪吃蛇的canvas元素
+ * 绘制侧边栏
  */
-Snake.prototype.drawSideBar = function (canvas) {
+Snake.prototype.drawSideBar = function () {
 	var self = this;
 	var width = self.canvasWidth;
 	var height = self.canvasHeight;
+	var canvas = document.getElementById("mycanvas");
 	var ctx = canvas.getContext("2d");
 
 	ctx.strokeStyle = "#000";
-	roundedRect(ctx, width-115, 10, 105, height-20, 5, false);
-	self.drawText(canvas);
+	roundedRect(ctx, width-117, 10, 105, height-20, 5, false);
+	self.drawText();
 };
 
 /**
  * 绘制分数及生命值
- * @param  DOMelement canvas 绘制贪吃蛇的canvas元素
  */
-Snake.prototype.drawText = function(canvas) {
+Snake.prototype.drawText = function() {
+	var canvas = document.getElementById("mycanvas");
 	var ctx = canvas.getContext("2d");
 	var self = this;
 	var width = self.canvasWidth;
 	var height = self.canvasHeight;
 
-	ctx.clearRect(this.canvasWidth-114, 30, 102, 80);
+	ctx.clearRect(this.canvasWidth-116, 30, 102, 80);
 	// 设置字体
 	ctx.font = "Bold 20px Arial"; 
 	// 设置对齐方式
@@ -215,7 +260,7 @@ Snake.prototype.drawText = function(canvas) {
 	// 设置字体内容，以及在画布上的位置
 	ctx.strokeText("score: "+self.score, width-111, 50); 
 	// 绘制空心字
-	ctx.strokeText("live:   x"+self.live, width-111, 90);
+	ctx.strokeText("life:   x"+self.live, width-111, 90);
 }
 
 
