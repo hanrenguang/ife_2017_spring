@@ -1,0 +1,44 @@
+* {
+	margin: 0;
+	padding: 0;
+	font-family: "Microsoft Yahei", sans-serif;
+}
+
+p.game-name {
+	text-align: center;
+	font-size: 45px;
+	letter-spacing: 10px;
+	margin-top: 60px;
+	line-height: 40px;
+}
+
+
+.level-chance {
+	width: 100%;
+	margin: 100px auto;
+	text-align: center;
+}
+.level-chance a {
+	display: inline-block;
+	text-decoration: none;
+	color: #fff;
+	padding: 10px 20px;
+	margin: 0 20px;
+	font-size: 25px;
+	line-height: 40px;
+	border-radius: 10px;
+}
+.normal-mode {
+	background-color: #04A8FA;
+}
+.level-mode {
+	background-color: #FC621F;
+}
+.dodge-mode {
+	background-color: #FA081C;
+}
+
+
+#mycanvas {
+	display: none;
+}
