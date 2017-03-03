@@ -54,3 +54,44 @@ p.game-name {
 #bgcanvas {
 	z-index: 1;
 }
+.wrapper div {
+	position: absolute;
+	z-index: 3;
+	left: 50%;
+	top: 0;
+	display: none;
+	text-align: center;
+	background-color: rgba(255, 255, 255, 0.8);
+}
+.stop-status-box a {
+	display: inline-block;
+	text-decoration: none;
+	color: #fff;
+	padding: 10px 20px;
+	margin-top: 150px;
+	margin-right: 10px;
+	font-size: 25px;
+	line-height: 40px;
+	border-radius: 10px;
+}
+.continue {
+	background-color: #04A8FA;
+}
+.return-menu {
+	background-color: #FC621F;
+}
+.begin-status-box p {
+	margin: 50px 0;
+	font-size: 20px;
+	letter-spacing: 1px;
+}
+.begin-status-box a {
+	display: inline-block;
+	text-decoration: none;
+	color: #fff;
+	padding: 10px 20px;
+	font-size: 25px;
+	line-height: 40px;
+	border-radius: 10px;
+	background-color: #04A8FA;
+}
