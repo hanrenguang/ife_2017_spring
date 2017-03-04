@@ -615,7 +615,7 @@ Snake.prototype.passLevel = function () {
 		this.timerId = null;
 		document.querySelector(".level").innerHTML = " " + this.level + " ";
 		this.level++;
-		this.aim += 10;
+		this.aim += 5;
 		this.reset();
 		this.centerDiv(document.querySelector(".pass-status-box"));
 		return true;
