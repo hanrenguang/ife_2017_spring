@@ -86,7 +86,7 @@ function unEvent(elem, eventType, listener) {
  */
 function levelInit() {
 	var snake = new Snake(8, "#333", 500, 10, 370, 310, function () {
-		var dSpeed = 50 * (this.level-1);
+		var dSpeed = 100 * (this.level-1);
 
 		if((500 - dSpeed) > 50) {
 			this.speed = 500 - dSpeed;
@@ -615,7 +615,7 @@ Snake.prototype.passLevel = function () {
 		this.timerId = null;
 		document.querySelector(".level").innerHTML = " " + this.level + " ";
 		this.level++;
-		this.aim += 5;
+		this.aim += 10;
 		this.reset();
 		this.centerDiv(document.querySelector(".pass-status-box"));
 		return true;
