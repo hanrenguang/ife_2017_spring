@@ -74,13 +74,13 @@ p.game-name {
 	line-height: 30px;
 	border-radius: 10px;
 }
-.continue {
+.continue, .again, .next {
 	background-color: #04A8FA;
 }
 .return-menu {
 	background-color: #FC621F;
 }
-.gameover-status-box a, .win-status-box a {
+.gameover-status-box a, .win-status-box a, .pass-status-box a {
 	display: inline-block;
 	text-decoration: none;
 	color: #fff;
@@ -90,10 +90,7 @@ p.game-name {
 	line-height: 30px;
 	border-radius: 10px;
 }
-.again {
-	background-color: #04A8FA;
-}
-.begin-status-box p, .gameover-status-box p, .win-status-box p {
+.begin-status-box p, .gameover-status-box p, .win-status-box p, .pass-status-box p {
 	margin: 50px 0;
 	font-size: 20px;
 	letter-spacing: 1px;

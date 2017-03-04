@@ -5,9 +5,11 @@ window.onload = function () {
 	var again = document.querySelectorAll(".again");
 	var gameoverBox = document.querySelector(".gameover-status-box");
 	var winBox = document.querySelector(".win-status-box");
+	var passBox = document.querySelector(".pass-status-box");
+	var nextBtn = document.querySelector(".next");
 	var snake = null; // 保存贪吃蛇实例
 
-	snake = normalInit();
+	snake = levelInit();
 	snake.init();
 
 	// 为开始游戏绑定点击事件
@@ -41,10 +43,16 @@ window.onload = function () {
 		snake.continueGame();
 	});
 
+	// 继续下一关
+	onEvent(nextBtn, "click", function () {
+		snake.hideDiv(passBox);
+		snake.run();
+	});
+
 	// 重新开始
 	for(var i = 0; i < again.length; i++) {
 		onEvent(again[i], "click", function () {
-			snake = normalInit();
+			snake = levelInit();
 			snake.hideDiv(gameoverBox);
 			snake.hideDiv(winBox);
 			snake.init();
@@ -73,13 +81,12 @@ function unEvent(elem, eventType, listener) {
 }
 
 /**
- * 普通模式的初始化
+ * 过关模式的初始化
  * @return Object 贪吃蛇实例
  */
-function normalInit() {
-	var snake = new Snake(8, "#333", 500, 370, 310, function () {
-		var weighted = Math.floor((this.bodyLong-5) / 15);
-		var dSpeed = 50 * weighted;
+function levelInit() {
+	var snake = new Snake(8, "#333", 500, 10, 370, 310, function () {
+		var dSpeed = 50 * (this.level-1);
 
 		if((500 - dSpeed) > 50) {
 			this.speed = 500 - dSpeed;
@@ -131,15 +138,19 @@ function creat2dArr(one, two) {
  * @param Number bodyLong  蛇身初始长度
  * @param String color  蛇身颜色
  * @param Number speed  蛇爬行的速度
+ * @param Number aim  初始通关目标分值
  * @param Number canvasW  canvas的宽度
  * @param Number canvasH  canvas的高度
  * @param Function changeSpeedFn  自定义改变速度的函数
  */
-function Snake(bodyLong, color, speed, canvasW, canvasH, changeSpeedFn) {
+function Snake(bodyLong, color, speed, aim, canvasW, canvasH, changeSpeedFn) {
 	this.score = 0; // 分数
 	this.life = 1; // 生命
+	this.level = 1; // 关卡
 	this.isEat = false; // 是否吃到食物标志位
+	this._bodyLong = bodyLong; // 保存初始长度
 	this.bodyLong = bodyLong; // 蛇身长度
+	this.aim = aim; // 通关的目标分值
 	this.canvasWidth = canvasW;
 	this.canvasHeight = canvasH;
 	this.xCount = (canvasW-130)/12; // 地图行数
@@ -147,13 +158,13 @@ function Snake(bodyLong, color, speed, canvasW, canvasH, changeSpeedFn) {
 	this.color = color; // 蛇身的颜色
 	this.speed = speed; // 蛇爬行的速度
 	this.timerId = null; // 定时器id
-	this.directionQueue = []; // 爬行方向("up": 上，"down": 下，"left": 左，"right": 右)
-	this.nextDirection = "up"; // 定义初始爬行方向为上
-	this.dx = 0; // 每次爬行x的变化值（初始为向上）
-	this.dy = -1; // 每次爬行y的变化值（初始为向上）
+	this.directionQueue = null; // 爬行方向("up": 上，"down": 下，"left": 左，"right": 右)
+	this.nextDirection = undefined; // 爬行方向
+	this.dx = 0; // 每次爬行x的变化值
+	this.dy = 0; // 每次爬行y的变化值
 	this.foodX = 0; // 食物的位置x坐标
 	this.foodY = 0; // 食物的位置y坐标
-	this.position = creat2dArr(this.xCount, this.yCount); // 位置数组，position[x][y] = 0 为空，position[x][y] = 1 为蛇身，position[x][y] = 2 为食物
+	this.position = null; // 位置数组，position[x][y] = 0 为空，position[x][y] = 1 为蛇身，position[x][y] = 2 为食物
 	this.bodyArr = null; // 蛇身每一截所在的位置组成的数组
 	this.changeSpeed = changeSpeedFn;
 }
@@ -199,6 +210,14 @@ Snake.prototype.init = function () {
 	var beginBox = document.querySelector(".begin-status-box");
 
 	changeCanvas(canvas, this.canvasWidth, this.canvasHeight);
+	// 重置位置数组
+	this.position = creat2dArr(this.xCount, this.yCount);
+	// 初始化方向队列
+	this.directionQueue = [];
+	// 初始化爬行方向为向上
+	this.nextDirection = "up";
+	this.dx = 0;
+	this.dy = -1;
 	// 居中显示div
 	this.centerDiv(beginBox);
 	// 绘制背景
@@ -237,7 +256,11 @@ Snake.prototype.draw = function () {
 	self.eatFood(self.bodyArr[0].x+self.dx, self.bodyArr[0].y+self.dy);
 	if(self.isEat) {
 		self.setBodyArr(true);
-		self.win(); // 判断是否赢了
+		if(self.win()) { // 判断是否赢了
+			return;
+		} else if(self.passLevel()) { // 判断是否通关
+			return;
+		}
 		self.isEat = false;
 		// 重绘食物
 		self.drawFood("#fff", true);
@@ -560,14 +583,16 @@ Snake.prototype.drawText = function() {
 	var width = self.canvasWidth;
 	var height = self.canvasHeight;
 
-	ctx.clearRect(this.canvasWidth-116, 30, 102, 80);
+	ctx.clearRect(this.canvasWidth-116, 30, 102, 160);
 
 	ctx.font = "Bold 20px Arial"; 
 	ctx.textAlign = "left";
 	ctx.fillStyle = "#000"; 
 	// 设置字体内容，以及在画布上的位置
-	ctx.strokeText("score: "+self.score, width-111, 50); 
-	ctx.strokeText("life:   x"+self.life, width-111, 90);
+	ctx.strokeText("score: "+self.score, width-111, 50);
+	ctx.strokeText("aim: "+self.aim, width-111, 90);
+	ctx.strokeText("life:   x"+self.life, width-111, 130);
+	ctx.strokeText("level: "+self.level, width-111, 170);
 }
 
 /**
@@ -581,14 +606,67 @@ Snake.prototype.gameover = function () {
 };
 
 /**
- * 获得胜利
+ * 通过关卡
+ * @return Boolean 是否通关
+ */
+Snake.prototype.passLevel = function () {
+	if(this.score === this.aim) {
+		clearTimeout(this.timerId);
+		this.timerId = null;
+		document.querySelector(".level").innerHTML = " " + this.level + " ";
+		this.level++;
+		this.aim += 10;
+		this.reset();
+		this.centerDiv(document.querySelector(".pass-status-box"));
+		return true;
+	}
+
+	return false;
+};
+
+/**
+ * 重置
+ */
+Snake.prototype.reset = function () {
+	// 重置分数
+	this.score = 0;
+	// 重置蛇身长度
+	this.bodyLong = this._bodyLong;
+	// 重置位置数组
+	this.position = creat2dArr(this.xCount, this.yCount);
+	// 初始化方向队列
+	this.directionQueue = [];
+	// 初始化爬行方向为向上
+	this.nextDirection = "up";
+	this.dx = 0;
+	this.dy = -1;
+	// 重置食物标志位
+	this.isEat = false;
+	// 绘制背景
+	this.drawBackground(this.canvasWidth, this.canvasHeight);
+	// 初始化蛇的位置
+	this.bodyArr = this.initPositionArr(this.bodyLong);
+	// 绘制食物
+	this.drawFood("#fff", true);
+	// 绘制蛇身
+	this.drawSnake();
+	// 绘制侧边栏
+	this.drawSideBar();
+};
+
+/**
+ * 通过全部关卡
+ * @return Boolean 是否全部通关
  */
 Snake.prototype.win = function () {
-	if(this.bodyLong === this.xCount*this.yCount) {
+	if(this.score === this.aim && this.speed === 50) {
 		clearTimeout(this.timerId);
 		this.timerId = null;
 		this.centerDiv(document.querySelector(".win-status-box"));
+		return true;
 	}
+
+	return false;
 };
 
 /**
