@@ -70,8 +70,8 @@ p.game-name {
 	padding: 10px 20px;
 	margin-top: 150px;
 	margin-right: 10px;
-	font-size: 25px;
-	line-height: 40px;
+	font-size: 20px;
+	line-height: 30px;
 	border-radius: 10px;
 }
 .continue {
@@ -80,7 +80,20 @@ p.game-name {
 .return-menu {
 	background-color: #FC621F;
 }
-.begin-status-box p {
+.gameover-status-box a, .win-status-box a {
+	display: inline-block;
+	text-decoration: none;
+	color: #fff;
+	padding: 10px 20px;
+	margin-right: 10px;
+	font-size: 20px;
+	line-height: 30px;
+	border-radius: 10px;
+}
+.again {
+	background-color: #04A8FA;
+}
+.begin-status-box p, .gameover-status-box p, .win-status-box p {
 	margin: 50px 0;
 	font-size: 20px;
 	letter-spacing: 1px;
@@ -90,8 +103,8 @@ p.game-name {
 	text-decoration: none;
 	color: #fff;
 	padding: 10px 20px;
-	font-size: 25px;
-	line-height: 40px;
+	font-size: 20px;
+	line-height: 30px;
 	border-radius: 10px;
 	background-color: #04A8FA;
 }

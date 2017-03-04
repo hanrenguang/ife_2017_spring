@@ -1,30 +1,14 @@
 window.onload = function () {
-	var chanceBox = document.querySelector(".level-chance");
 	var beginBox = document.querySelector(".begin-status-box");
 	var begin = document.querySelector(".begin");
 	var continueBtn = document.querySelector(".continue");
-	var returnBtn = document.querySelector(".return-menu");
+	var again = document.querySelectorAll(".again");
+	var gameoverBox = document.querySelector(".gameover-status-box");
+	var winBox = document.querySelector(".win-status-box");
 	var snake = null; // 保存贪吃蛇实例
 
-	// 给模式选择绑定点击事件
-	delegate(chanceBox, "a", "click", function () {
-		var self = this;
-
-		chanceBox.style.display = "none";
-
-		switch(self.className) {
-			case "normal-mode": // 普通模式
-				snake = normalInit();
-				snake.init();
-				break;
-			case "level-mode": // 过关模式
-				snake = levelInit();
-				break;
-			case "dodge-mode": // 躲避模式
-				snake = dodgeInit();
-				break;
-		}
-	});
+	snake = normalInit();
+	snake.init();
 
 	// 为开始游戏绑定点击事件
 	onEvent(begin, "click", function () {
@@ -57,29 +41,15 @@ window.onload = function () {
 		snake.continueGame();
 	});
 
-	// 返回主菜单
-	onEvent(returnBtn, "click", function () {
-		window.location.reload();
-	});
-}
-
-
-/**
- * 事件代理（对每个elem下的tag元素调用listener函数）
- * @param  DOMelement elem  绑定事件的元素
- * @param  String     tag   事件发生时触发回调的html标签
- * @param  String     eventType 事件类型
- * @param  Function   listener 回调函数
- */
-function delegate(elem, tag, eventType, listener) {
-	onEvent(elem, eventType, function(e) {
-		e = e || window.event;
-		var target = e.srcElement ? e.srcElement : e.target;
-
-		if (!tag || tag === target.nodeName.toLowerCase()) {
-			listener.call(target);
-		}
-	});
+	// 重新开始
+	for(var i = 0; i < again.length; i++) {
+		onEvent(again[i], "click", function () {
+			snake = normalInit();
+			snake.hideDiv(gameoverBox);
+			snake.hideDiv(winBox);
+			snake.init();
+		});
+	}
 }
 
 /**
@@ -102,17 +72,16 @@ function unEvent(elem, eventType, listener) {
 	elem.removeEventListener(eventType, listener, false);
 }
 
-
 /**
  * 普通模式的初始化
  * @return Object 贪吃蛇实例
  */
 function normalInit() {
-	var snake = new Snake(8, "#333", 500, 490, 370, function () {
+	var snake = new Snake(8, "#333", 500, 370, 310, function () {
 		var weighted = Math.floor((this.bodyLong-5) / 15);
 		var dSpeed = 50 * weighted;
 
-		if((this.speed - dSpeed) > 50) {
+		if((500 - dSpeed) > 50) {
 			this.speed = 500 - dSpeed;
 		} else {
 			this.speed = 50;
@@ -120,22 +89,6 @@ function normalInit() {
 	});
 
 	return snake;
-}
-
-/**
- * 过关模式的初始化
- * @return Object 贪吃蛇实例
- */
-function levelInit() {
-	var canvas = document.getElementById("mycanvas");
-}
-
-/**
- * 躲避模式的初始化
- * @return Object 贪吃蛇实例
- */
-function dodgeInit() {
-	var canvas = document.getElementById("mycanvas");
 }
 
 /**
@@ -171,7 +124,6 @@ function creat2dArr(one, two) {
 
 	return arr;
 }
-
 
 /**
  * 贪吃蛇构造函数
@@ -265,7 +217,6 @@ Snake.prototype.init = function () {
  * 动画绘制总函数
  */
 Snake.prototype.draw = function () {
-	console.log(this.speed);
 	var self = this;
 	var canvas = document.getElementById("mycanvas");
 	var ctx = canvas.getContext("2d");
@@ -279,16 +230,14 @@ Snake.prototype.draw = function () {
 	// 判断是否发生碰撞
 	self.collisionDetection();
 	if(self.life === 0) { // 游戏结束
-		alert("Game over!");
-		clearTimeout(self.timerId);
-		self.timer = null;
-		this.drawText();
+		self.gameover();
 		return;
 	}
 	// 判断是否吃到食物
 	self.eatFood(self.bodyArr[0].x+self.dx, self.bodyArr[0].y+self.dy);
 	if(self.isEat) {
 		self.setBodyArr(true);
+		self.win(); // 判断是否赢了
 		self.isEat = false;
 		// 重绘食物
 		self.drawFood("#fff", true);
@@ -337,7 +286,7 @@ Snake.prototype.continueGame = function () {
  */
 Snake.prototype.initPositionArr = function (bodyLong) {
 	var bodyArr = [];
-	var headX = this.xCount / 2;
+	var headX = Math.floor(this.xCount / 2);
 	var headY = this.yCount - 10;
 
 	bodyLong = (bodyLong > 10 || bodyLong < 5) ? 10 : bodyLong;
@@ -508,7 +457,6 @@ Snake.prototype.judgeLegality = function (direct) {
 	return true;
 };
 
-
 /**
  * 碰撞检测
  * @return Boolean 是否发生碰撞
@@ -577,9 +525,9 @@ Snake.prototype.drawBackground = function (width, height) {
 	var beginY = 6;
 
 	ctx.fillStyle = "#aab697";
-	for(var i = xCount; i > 0; i--) {
+	for(var i = yCount; i > 0; i--) {
 		var copyX = beginX;
-		for(var j = yCount; j > 0; j--) {
+		for(var j = xCount; j > 0; j--) {
 			roundedRect(ctx, copyX, beginY, 10, 10, 2, true);
 			copyX += 12;
 		}
@@ -622,6 +570,23 @@ Snake.prototype.drawText = function() {
 	ctx.strokeText("life:   x"+self.life, width-111, 90);
 }
 
+/**
+ * 游戏结束
+ */
+Snake.prototype.gameover = function () {
+	this.centerDiv(document.querySelector(".gameover-status-box"));
+	clearTimeout(this.timerId);
+	this.timerId = null;
+	this.drawText();
+};
+
+Snake.prototype.win = function () {
+	if(this.bodyLong === this.xCount*this.yCount) {
+		clearTimeout(this.timerId);
+		this.timerId = null;
+		this.centerDiv(document.querySelector(".win-status-box"));
+	}
+};
 
 /**
  * 绘制圆角矩形
