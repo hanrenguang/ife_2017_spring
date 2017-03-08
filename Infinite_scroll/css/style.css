@@ -9,7 +9,7 @@ html, body {
 }
 ul {
 	list-style: none;
-	margin-top: 50px;
+	margin-top: 100px;
 }
 
 
@@ -36,10 +36,14 @@ ul {
 
 
 header {
+	width: 100%;
 	text-align: center;
 	font-size: 18px;
 	line-height: 50px;
-	background-color: #fff;
+	background-color: #cdc1b4;
+	position: fixed;
+	top: 0;
+	left: 0;
 }
 ul li {
 	background-color: #fff;
