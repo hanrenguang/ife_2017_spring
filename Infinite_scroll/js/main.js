@@ -61,7 +61,7 @@ function getPosition(element) {
 
 // 注册事件
 function addEvent(el, type, callback, useCapture) {
-	if (el.dispatchEvent) { //w3c方式优先
+	if (el.dispatchEvent) {
 		el.addEventListener(type, callback, !!useCapture);
 	} else {
 		el.attachEvent("on" + type, callback);
