@@ -1,0 +1,111 @@
+* {
+	margin: 0;
+	padding: 0;
+	font-family: "Microsoft Yahei", sans-serif;
+}
+html, body {
+	width: 100%;
+	background-color: #e2e2e2;
+}
+ul {
+	list-style: none;
+	margin-top: 50px;
+}
+
+
+@-webkit-keyframes loading {
+	50%{
+		transform: scale(0.4);
+		opacity: 0.3;
+	}
+	100%{
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+@keyframes loading {
+	50%{
+		transform: scale(0.4);
+		opacity: 0.3;
+	}
+	100%{
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+
+header {
+	text-align: center;
+	font-size: 18px;
+	line-height: 50px;
+	background-color: #fff;
+}
+ul li {
+	background-color: #fff;
+	line-height: 50px;
+	border-top: 1px solid #ccc;
+	text-indent: 20px;
+}
+
+.loading-wrapper {
+	height: 65px;
+	width: 65px;
+	margin: 10px auto;
+	position: relative;
+}
+.loading-wrapper span {
+	position: absolute;
+	height: 15px;
+	width: 15px;
+	border-radius: 50%;
+	background-color: #333;
+}
+.loading-wrapper span:nth-child(1) {
+	top: 0px;
+	left: 25px;
+	-webkit-animation: loading 1s ease 0s infinite;
+	animation: loading 1s ease 0s infinite;
+}
+.loading-wrapper span:nth-child(2) {
+	top: 8px;
+	left: 42px;
+	-webkit-animation: loading 1s ease 0.12s infinite;
+	animation: loading 1s ease 0.12s infinite;
+}
+.loading-wrapper span:nth-child(3) {
+	top: 25px;
+	left: 50px;
+	-webkit-animation: loading 1s ease 0.24s infinite;
+	animation: loading 1s ease 0.24s infinite;
+}
+.loading-wrapper span:nth-child(4) {
+	top: 42px;
+	left: 42px;
+	-webkit-animation: loading 1s ease 0.36s infinite;
+	animation: loading 1s ease 0.36s infinite;
+}
+.loading-wrapper span:nth-child(5) {
+	top: 50px;
+	left: 25px;
+	-webkit-animation: loading 1s ease 0.48s infinite;
+	animation: loading 1s ease 0.48s infinite;
+}
+.loading-wrapper span:nth-child(6) {
+	top: 42px;
+	left: 8px;
+	-webkit-animation: loading 1s ease 0.60s infinite;
+	animation: loading 1s ease 0.60s infinite;
+}
+.loading-wrapper span:nth-child(7) {
+	top: 25px;
+	left: 0px;
+	-webkit-animation: loading 1s ease 0.72s infinite;
+	animation: loading 1s ease 0.72s infinite;
+}
+.loading-wrapper span:nth-child(8) {
+	top: 8px;
+	left: 8px;
+	-webkit-animation: loading 1s ease 0.84s infinite;
+	animation: loading 1s ease 0.84s infinite;
+}
