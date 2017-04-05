@@ -12,7 +12,7 @@ window.onload = function () {
 
 	// 为开始游戏绑定点击事件
 	onEvent(begin, "click", function () {
-		snake.hideDiv(beginBox);
+		hideDiv(beginBox);
 		// 绑定键盘事件
 		onEvent(document, "keydown", function (e) {
 			e = e || window.event;
@@ -45,8 +45,8 @@ window.onload = function () {
 	for(var i = 0; i < again.length; i++) {
 		onEvent(again[i], "click", function () {
 			snake = normalInit();
-			snake.hideDiv(gameoverBox);
-			snake.hideDiv(winBox);
+			hideDiv(gameoverBox);
+			hideDiv(winBox);
 			snake.init();
 		});
 	}
@@ -126,6 +126,29 @@ function creat2dArr(one, two) {
 }
 
 /**
+ * 居中显示div
+ * @param  DOMelement div 要居中显示的div
+ */
+function centerDiv(div) {
+	var gameCanvas = document.querySelector("#mycanvas");
+	var canvasW = gameCanvas.width;
+	var canvasH = gameCanvas.height;
+
+	div.style.width = canvasW + "px";
+	div.style.height = canvasH + "px";
+	div.style.marginLeft = -(canvasW / 2) + "px";
+	div.style.display = "block";
+}
+
+/**
+ * 隐藏div
+ * @param  DOMelement div 要隐藏的div
+ */
+function hideDiv(div) {
+	div.style.display = "none";
+}
+
+/**
  * 贪吃蛇构造函数
  * @constructor
  * @param Number bodyLong  蛇身初始长度
@@ -172,24 +195,6 @@ Snake.prototype.each =  function (arr, fn) {
     }
 };
 
-/**
- * 居中显示div
- * @param  DOMelement div 要居中显示的div
- */
-Snake.prototype.centerDiv =  function (div) {
-	div.style.width = this.canvasWidth + "px";
-	div.style.height = this.canvasHeight + "px";
-	div.style.marginLeft = -(this.canvasWidth / 2) + "px";
-	div.style.display = "block";
-}
-
-/**
- * 隐藏div
- * @param  DOMelement div 要隐藏的div
- */
-Snake.prototype.hideDiv = function (div) {
-	div.style.display = "none";
-}
 
 /**
  * 做一些初始化操作
@@ -200,7 +205,7 @@ Snake.prototype.init = function () {
 
 	changeCanvas(canvas, this.canvasWidth, this.canvasHeight);
 	// 居中显示div
-	this.centerDiv(beginBox);
+	centerDiv(beginBox);
 	// 绘制背景
 	this.drawBackground(this.canvasWidth, this.canvasHeight);
 	// 初始化蛇的位置
@@ -268,14 +273,14 @@ Snake.prototype.run = function () {
 Snake.prototype.pause = function () {
 	clearTimeout(this.timerId);
 	this.timerId = null;
-	this.centerDiv(document.querySelector(".stop-status-box"));
+	centerDiv(document.querySelector(".stop-status-box"));
 };
 
 /**
  * 继续游戏
  */
 Snake.prototype.continueGame = function () {
-	this.hideDiv(document.querySelector(".stop-status-box"));
+	hideDiv(document.querySelector(".stop-status-box"));
 	this.run();
 };
 
@@ -574,7 +579,7 @@ Snake.prototype.drawText = function() {
  * 游戏结束
  */
 Snake.prototype.gameover = function () {
-	this.centerDiv(document.querySelector(".gameover-status-box"));
+	centerDiv(document.querySelector(".gameover-status-box"));
 	clearTimeout(this.timerId);
 	this.timerId = null;
 	this.drawText();
@@ -587,7 +592,7 @@ Snake.prototype.win = function () {
 	if(this.bodyLong === this.xCount*this.yCount) {
 		clearTimeout(this.timerId);
 		this.timerId = null;
-		this.centerDiv(document.querySelector(".win-status-box"));
+		centerDiv(document.querySelector(".win-status-box"));
 	}
 };
 
