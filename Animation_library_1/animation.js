@@ -1,4 +1,4 @@
-(function (global, factory) {
+(function (factory) {
 	"use strict";
 	if (typeof define === "function" && define.amd) { // AMD
 		define(factory);
@@ -7,6 +7,8 @@
 	} else { // Browser
 		factory();
 	}
-})(this, function () {
+})(function () {
+	"use strict";
 
+	
 })
