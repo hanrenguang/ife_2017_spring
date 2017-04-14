@@ -8,12 +8,7 @@ function Observer(data) {
 Observer.prototype.init = function (obj) {
 	for(let key in obj) {
 		if( obj.hasOwnProperty(key) ) {
-			/*if( isObject(obj[key]) ) {
-				new Observer(obj[key]);
-			}*/
-
 			this.observe(key, obj[key]);
-
 			this.convert(key, obj[key]);
 		}
 	}
