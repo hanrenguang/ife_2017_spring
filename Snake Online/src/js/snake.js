@@ -54,7 +54,7 @@ window.onload = function () {
 
 /**
  * 添加事件监听
- * @param  DOMelement elem  添加事件监听的元素
+ * @param  HTMLelement elem  添加事件监听的元素
  * @param  String     eventType  事件类型
  * @param  Function   listener  回调函数
  */
@@ -64,7 +64,7 @@ function onEvent(elem, eventType, listener) {
 
 /**
  * 移除事件监听
- * @param  DOMelement elem  移除事件监听的元素
+ * @param  HTMLelement elem  移除事件监听的元素
  * @param  String     eventType  事件类型
  * @param  Function   listener  回调函数
  */
@@ -93,7 +93,7 @@ function normalInit() {
 
 /**
  * 改变canvas的宽高
- * @param  DOMelement  canvas  将被改变的canvas元素
+ * @param  HTMLelement  canvas  将被改变的canvas元素
  * @param  Number  width  改变后canvas的宽度
  * @param  Number  height  改变后canvas的高度
  */
@@ -127,7 +127,7 @@ function creat2dArr(one, two) {
 
 /**
  * 居中显示div
- * @param  DOMelement div 要居中显示的div
+ * @param  HTMLelement div 要居中显示的div
  */
 function centerDiv(div) {
 	var gameCanvas = document.querySelector("#mycanvas");
@@ -142,7 +142,7 @@ function centerDiv(div) {
 
 /**
  * 隐藏div
- * @param  DOMelement div 要隐藏的div
+ * @param  HTMLelement div 要隐藏的div
  */
 function hideDiv(div) {
 	div.style.display = "none";
@@ -295,7 +295,7 @@ Snake.prototype.initPositionArr = function (bodyLong) {
 	var headY = this.yCount - 10;
 
 	bodyLong = (bodyLong > 10 || bodyLong < 5) ? 10 : bodyLong;
-	
+
 	for(var i = 0; i < bodyLong; i++) {
 		bodyArr.push({
 			x: headX,
@@ -567,11 +567,11 @@ Snake.prototype.drawText = function() {
 
 	ctx.clearRect(this.canvasWidth-116, 30, 102, 80);
 
-	ctx.font = "Bold 20px Arial"; 
+	ctx.font = "Bold 20px Arial";
 	ctx.textAlign = "left";
-	ctx.fillStyle = "#000"; 
+	ctx.fillStyle = "#000";
 	// 设置字体内容，以及在画布上的位置
-	ctx.strokeText("score: "+self.score, width-111, 50); 
+	ctx.strokeText("score: "+self.score, width-111, 50);
 	ctx.strokeText("life:   x"+self.life, width-111, 90);
 }
 
